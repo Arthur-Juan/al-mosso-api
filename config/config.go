@@ -5,7 +5,8 @@ import (
 )
 
 var (
-	db *gorm.DB
+	db       *gorm.DB
+	filePath = "./uploads"
 )
 
 func Init() error {
@@ -18,6 +19,10 @@ func Init() error {
 	}
 
 	return nil
+}
+
+func GetFilePath() string {
+	return filePath
 }
 
 func GetDb() *gorm.DB {

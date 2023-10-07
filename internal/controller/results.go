@@ -1,8 +1,13 @@
 package controller
 
 import (
+	logger2 "al-mosso-api/pkg/logger"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
+)
+
+var (
+	logger = logger2.NewLogger("results")
 )
 
 func Ok(ctx *fiber.Ctx, data interface{}) error {
@@ -10,6 +15,7 @@ func Ok(ctx *fiber.Ctx, data interface{}) error {
 }
 
 func InternalServerError(ctx *fiber.Ctx, err error) error {
+	logger.Errorf("%s", err)
 	return ctx.Status(http.StatusInternalServerError).JSON(err.Error())
 }
 
