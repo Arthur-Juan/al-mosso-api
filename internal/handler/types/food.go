@@ -20,3 +20,11 @@ func (i *InsertFoodInput) Validate() error {
 
 	return nil
 }
+
+type FoodOutput struct {
+	ID          uint    `json:"id"`
+	Name        string  `json:"name"`
+	Price       float64 `json:"price"`
+	Description string  `json:"description"`
+	File        string  `json:"file"`
+}

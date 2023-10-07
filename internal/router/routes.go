@@ -13,6 +13,7 @@ func startRoutes(router *fiber.App) {
 		v1.Get("/chefs", controller.GetChefsController)
 
 		v1.Post("/foods", controller.InsertFoodController)
+		v1.Get("/foods", controller.ListFoodController)
 	}
 
 }
