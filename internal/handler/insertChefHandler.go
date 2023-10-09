@@ -34,6 +34,4 @@ func InsertChefHandler(input *types.InsertChefInput) (uint, error) {
 	}
 
 	return schema.ID, nil
-
-	return 0, nil
 }
