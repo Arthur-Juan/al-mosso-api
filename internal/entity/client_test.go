@@ -5,7 +5,7 @@ import (
 )
 
 func TestNewClientWithBlankName(t *testing.T) {
-	client, err := NewClient("", "email@email.com", "pass123", "22992222222")
+	client, err := NewClient("", "emailPkg@emailPkg.com", "22992222222")
 	if err != nil {
 		return
 	}
@@ -14,7 +14,7 @@ func TestNewClientWithBlankName(t *testing.T) {
 }
 
 func TestNewClientWithBlankEmail(t *testing.T) {
-	client, err := NewClient("name", "", "pass123", "22992222222")
+	client, err := NewClient("name", "", "22992222222")
 	if err != nil {
 		return
 	}
@@ -23,7 +23,7 @@ func TestNewClientWithBlankEmail(t *testing.T) {
 }
 
 func TestNewClientWithBlankPass(t *testing.T) {
-	client, err := NewClient("name", "email@emal.com", "", "22992222222")
+	client, err := NewClient("name", "emailPkg@emal.com", "22992222222")
 	if err != nil {
 		return
 	}
@@ -31,7 +31,7 @@ func TestNewClientWithBlankPass(t *testing.T) {
 	print(client)
 }
 func TestNewClientWithBlankPhone(t *testing.T) {
-	client, err := NewClient("name", "email@emal.com", "pass123", "")
+	client, err := NewClient("name", "emailPkg@emal.com", "")
 	if err != nil {
 		return
 	}
@@ -40,7 +40,7 @@ func TestNewClientWithBlankPhone(t *testing.T) {
 }
 
 func TestNewClient(t *testing.T) {
-	client, err := NewClient("name", "email@emal.com", "pass123", "22992222222")
+	client, err := NewClient("name", "emailPkg@emal.com", "22992222222")
 	if err != nil {
 		t.Error(err)
 	}
