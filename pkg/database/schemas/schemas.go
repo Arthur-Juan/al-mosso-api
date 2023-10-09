@@ -24,3 +24,8 @@ type Chef struct {
 	gorm.Model
 	entity.Chef
 }
+
+type Contact struct {
+	gorm.Model
+	entity.Contact
+}

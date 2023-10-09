@@ -9,6 +9,7 @@ func startRoutes(router *fiber.App) {
 	v1 := router.Group("/api/v1")
 
 	{
+		v1.Post("/contacts", controller.MakeContactController)
 
 		v1.Get("/chefs", controller.GetChefsController)
 		v1.Post("/chefs", controller.InsertChefController)
