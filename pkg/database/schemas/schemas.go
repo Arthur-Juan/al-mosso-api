@@ -29,3 +29,8 @@ type Contact struct {
 	gorm.Model
 	entity.Contact
 }
+
+type Config struct {
+	gorm.Model
+	entity.Config
+}

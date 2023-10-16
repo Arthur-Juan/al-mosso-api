@@ -34,7 +34,6 @@ func InsertFoodHandler(input *types.InsertFoodInput) (uint, error) {
 		Model: gorm.Model{},
 		Food:  *foodEntity,
 	}
-
 	result := db.Create(&schema)
 	if result.Error != nil {
 		return 0, result.Error

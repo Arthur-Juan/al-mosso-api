@@ -10,16 +10,17 @@ type Appointment struct {
 	Client    *Client
 	ClientID  uint
 	Date      time.Time
-	Period    time.Time
+	Period    string
 	PeopleQtd int
 	Message   string
 	Foods     []*Food `gorm:"many2many:appointment_foods"`
 	Verified  bool
+	Hash      string
 }
 
-func NewAppointment(client *Client, date time.Time, period time.Time, peopleQtd int, message string) (*Appointment, error) {
+func NewAppointment(client *Client, date time.Time, period string, peopleQtd int, message string) (*Appointment, error) {
 
-	if client == nil || date.IsZero() || period.IsZero() || peopleQtd < 1 || message == "" {
+	if client == nil || date.IsZero() || period == "" || peopleQtd < 1 || message == "" {
 		return nil, errors.New("client, date, period, people quantity and message is require")
 	}
 
@@ -30,5 +31,6 @@ func NewAppointment(client *Client, date time.Time, period time.Time, peopleQtd 
 		Period:    period,
 		PeopleQtd: peopleQtd,
 		Message:   message,
+		Verified:  false,
 	}, nil
 }

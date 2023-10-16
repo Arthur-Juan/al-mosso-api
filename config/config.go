@@ -28,3 +28,7 @@ func GetFilePath() string {
 func GetDb() *gorm.DB {
 	return db
 }
+
+func GetHostName() string {
+	return "http://localhost:8080"
+}
