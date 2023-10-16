@@ -7,6 +7,7 @@ import (
 	"al-mosso-api/pkg/cryptography"
 	"al-mosso-api/pkg/emailPkg"
 	"fmt"
+	"time"
 )
 
 func MakeAppointmentHandler(input *types.MakeAppointmentInput) (*types.AppointmentOutput, error) {
@@ -41,7 +42,9 @@ func MakeAppointmentHandler(input *types.MakeAppointmentInput) (*types.Appointme
 		client = newClient
 	}
 
-	appointment, err := entity.NewAppointment(client, input.Date, input.Period, input.Quantity, input.Message)
+	start, _ := time.Parse("12:00:00", input.Start)
+	end, _ := time.Parse("12:00:00", input.End)
+	appointment, err := entity.NewAppointment(client, input.Date, start, end, input.Quantity, input.Message)
 	hash, err := cryptography.GenerateRandomHash()
 	if err != nil {
 		return nil, err

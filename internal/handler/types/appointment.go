@@ -9,7 +9,8 @@ type MakeAppointmentInput struct {
 	Email    string    `json:"email"`
 	Phone    string    `json:"phone"`
 	Date     time.Time `json:"date"`
-	Period   string    `json:"period"`
+	Start    string    `json:"start"`
+	End      string    `json:"end"`
 	Quantity int       `json:"quantity"`
 	Message  string    `json:"message"`
 }
