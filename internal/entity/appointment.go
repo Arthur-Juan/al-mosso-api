@@ -18,12 +18,13 @@ type Appointment struct {
 	Verified  bool
 	Hash      string
 	Password  string
+	Code      string
 }
 
 func NewAppointment(client *Client, date time.Time, start time.Time, end time.Time, peopleQtd int, message string) (*Appointment, error) {
 
 	if client == nil || date.IsZero() || start.IsZero() || end.IsZero() || peopleQtd < 1 || message == "" {
-		return nil, errors.New("client, date, period, people quantity and message is require")
+		return nil, errors.New("client, date, start, end, people quantity and message are required")
 	}
 
 	if start.After(end) {

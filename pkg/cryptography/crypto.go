@@ -4,6 +4,8 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
+	random "math/rand"
+	"time"
 )
 
 func GenerateRandomHash() (string, error) {
@@ -26,4 +28,21 @@ func GenerateRandomHash() (string, error) {
 	hash := hex.EncodeToString(hashBytes)
 
 	return hash, nil
+}
+
+func GenerateDecoratedCode() string {
+	length := 13
+	// Define the decoration pattern
+	pattern := "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+
+	// Initialize a random seed
+	random.Seed(time.Now().UnixNano())
+
+	// Generate a random code
+	code := make([]byte, length)
+	for i := 0; i < length; i++ {
+		code[i] = pattern[random.Intn(len(pattern))]
+	}
+
+	return string(code)
 }
