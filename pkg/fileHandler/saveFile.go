@@ -2,7 +2,7 @@ package fileHandler
 
 import (
 	"al-mosso-api/config"
-	"al-mosso-api/internal/handler/types"
+	"al-mosso-api/internal/services/types"
 	"fmt"
 	"io"
 	"math/rand"

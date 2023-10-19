@@ -1,4 +1,4 @@
-package handler
+package services
 
 import (
 	"al-mosso-api/config"
@@ -12,6 +12,6 @@ var (
 )
 
 func InitHandlerConfig() {
-	logger = logger2.GetLogger("handler")
+	logger = logger2.GetLogger("services")
 	db = config.GetDb()
 }

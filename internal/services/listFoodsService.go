@@ -1,15 +1,27 @@
-package handler
+package services
 
 import (
-	"al-mosso-api/internal/handler/types"
+	"al-mosso-api/config"
+	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
+	"gorm.io/gorm"
 )
 
-func ListFoodsHandler() ([]types.FoodOutput, error) {
+type ListFoodsService struct {
+	db *gorm.DB
+}
+
+func NewListFoodsService() *ListFoodsService {
+	return &ListFoodsService{
+		db: config.GetDb(),
+	}
+}
+
+func (s *ListFoodsService) Exceute() ([]types.FoodOutput, error) {
 
 	var foods []schemas.Food
 
-	if err := db.Find(&foods).Error; err != nil {
+	if err := s.db.Find(&foods).Error; err != nil {
 		return nil, err
 	}
 

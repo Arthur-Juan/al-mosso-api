@@ -1,16 +1,27 @@
-package handler
+package services
 
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
-	"al-mosso-api/internal/handler/types"
+	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/cryptography"
 	"al-mosso-api/pkg/emailPkg"
 	"fmt"
+	"gorm.io/gorm"
 	"time"
 )
 
-func MakeAppointmentHandler(input *types.MakeAppointmentInput) (*types.AppointmentOutput, error) {
+type MakeAppointmentService struct {
+	db *gorm.DB
+}
+
+func NewMakeAppointmentService() *MakeAppointmentService {
+	return &MakeAppointmentService{
+		db: config.GetDb(),
+	}
+}
+
+func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*types.AppointmentOutput, error) {
 	/*
 		* seguri a abordagem de uma credencial para cada agendamento
 		  * envia o input
@@ -25,7 +36,7 @@ func MakeAppointmentHandler(input *types.MakeAppointmentInput) (*types.Appointme
 	*/
 	var client *entity.Client
 
-	err := db.Where("email = ?", input.Email).First(&client).Error
+	err := s.db.Where("email = ?", input.Email).First(&client).Error
 	//if err != nil {
 	//	return nil, err
 	//}
@@ -35,7 +46,7 @@ func MakeAppointmentHandler(input *types.MakeAppointmentInput) (*types.Appointme
 		if err != nil {
 			return nil, err
 		}
-		err = db.Create(&newClient).Error
+		err = s.db.Create(&newClient).Error
 		if err != nil {
 			return nil, err
 		}
@@ -51,7 +62,7 @@ func MakeAppointmentHandler(input *types.MakeAppointmentInput) (*types.Appointme
 	}
 
 	appointment.Hash = hash
-	err = db.Create(&appointment).Error
+	err = s.db.Create(&appointment).Error
 	if err != nil {
 		return nil, err
 	}

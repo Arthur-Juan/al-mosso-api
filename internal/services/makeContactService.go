@@ -1,13 +1,24 @@
-package handler
+package services
 
 import (
+	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
-	"al-mosso-api/internal/handler/types"
+	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
 	"gorm.io/gorm"
 )
 
-func MakeContactHandler(input *types.MakeContactInput) (string, error) {
+type MakeContactService struct {
+	db *gorm.DB
+}
+
+func NewMakeContactService() *MakeContactService {
+	return &MakeContactService{
+		db: config.GetDb(),
+	}
+}
+
+func (s *MakeContactService) Execute(input *types.MakeContactInput) (string, error) {
 
 	contactEntity, err := entity.NewContact(input.Name, input.Email, input.Subject, input.Message)
 	if err != nil {
@@ -19,7 +30,7 @@ func MakeContactHandler(input *types.MakeContactInput) (string, error) {
 		Contact: *contactEntity,
 	}
 
-	result := db.Create(&schema)
+	result := s.db.Create(&schema)
 	if result.Error != nil {
 		return "", err
 	}

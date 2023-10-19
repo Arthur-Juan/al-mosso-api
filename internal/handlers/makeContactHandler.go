@@ -1,12 +1,12 @@
-package controller
+package handlers
 
 import (
-	"al-mosso-api/internal/handler"
-	"al-mosso-api/internal/handler/types"
+	"al-mosso-api/internal/services"
+	"al-mosso-api/internal/services/types"
 	"github.com/gofiber/fiber/v2"
 )
 
-func MakeContactController(ctx *fiber.Ctx) error {
+func MakeContactHandler(ctx *fiber.Ctx) error {
 
 	input := &types.MakeContactInput{}
 
@@ -14,7 +14,8 @@ func MakeContactController(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	result, err := handler.MakeContactHandler(input)
+	svc := services.NewMakeContactService()
+	result, err := svc.Execute(input)
 	if err != nil {
 		return InternalServerError(ctx, err)
 	}

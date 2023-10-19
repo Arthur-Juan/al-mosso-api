@@ -2,8 +2,8 @@ package main
 
 import (
 	"al-mosso-api/config"
-	"al-mosso-api/internal/handler"
 	"al-mosso-api/internal/router"
+	"al-mosso-api/internal/services"
 	logger2 "al-mosso-api/pkg/logger"
 )
 
@@ -20,6 +20,6 @@ func main() {
 		panic(err)
 		return
 	}
-	handler.InitHandlerConfig()
+	services.InitHandlerConfig()
 	router.Initialize()
 }

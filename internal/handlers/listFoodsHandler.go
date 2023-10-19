@@ -1,13 +1,14 @@
-package controller
+package handlers
 
 import (
-	"al-mosso-api/internal/handler"
+	"al-mosso-api/internal/services"
 	"github.com/gofiber/fiber/v2"
 )
 
-func ListFoodController(ctx *fiber.Ctx) error {
+func ListFoodHandler(ctx *fiber.Ctx) error {
 
-	result, err := handler.ListFoodsHandler()
+	svc := services.NewListFoodsService()
+	result, err := svc.Exceute()
 
 	if err != nil {
 		return InternalServerError(ctx, err)

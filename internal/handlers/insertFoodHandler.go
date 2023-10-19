@@ -1,13 +1,13 @@
-package controller
+package handlers
 
 import (
-	"al-mosso-api/internal/handler"
-	"al-mosso-api/internal/handler/types"
+	"al-mosso-api/internal/services"
+	"al-mosso-api/internal/services/types"
 	"github.com/gofiber/fiber/v2"
 	"path/filepath"
 )
 
-func InsertFoodController(ctx *fiber.Ctx) error {
+func InsertFoodHandler(ctx *fiber.Ctx) error {
 
 	formFile, err := ctx.FormFile("picture")
 	if err != nil {
@@ -43,7 +43,8 @@ func InsertFoodController(ctx *fiber.Ctx) error {
 
 	input.File = file
 
-	result, err := handler.InsertFoodHandler(input)
+	svc := services.NewInsertFoodService()
+	result, err := svc.Execute(input)
 	if err != nil {
 		return InternalServerError(ctx, err)
 	}

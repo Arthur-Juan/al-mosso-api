@@ -1,4 +1,4 @@
-package controller
+package handlers
 
 import (
 	logger2 "al-mosso-api/pkg/logger"
