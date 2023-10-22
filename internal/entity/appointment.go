@@ -2,6 +2,8 @@ package entity
 
 import (
 	"errors"
+	"fmt"
+	"sort"
 	"time"
 )
 
@@ -31,9 +33,10 @@ func NewAppointment(client *Client, date time.Time, start time.Time, end time.Ti
 		return nil, errors.New("start time needs to be minor then end")
 	}
 
-	if end.Sub(start) > 3 {
-		return nil, errors.New("max 3h of booking are allowed")
-	}
+	//TODO -> REVER VALIDAÇÃO
+	//if end.Sub(start) > 3 {
+	//	return nil, errors.New("max 3h of booking are allowed")
+	//}
 	return &Appointment{
 		Client:    client,
 		ClientID:  client.ID,
@@ -44,4 +47,26 @@ func NewAppointment(client *Client, date time.Time, start time.Time, end time.Ti
 		Message:   message,
 		Verified:  false,
 	}, nil
+}
+
+func (a *Appointment) CheckOverlap(appointments []Appointment) []Appointment {
+
+	// Don't create a shallow copy of 'a'
+	sort.Slice(appointments, func(i, j int) bool {
+		return appointments[i].Start.Before(appointments[j].Start)
+	})
+
+	var overlaps []Appointment
+	for i := 1; i < len(appointments); i++ {
+		if appointments[i-1].End.After(appointments[i].Start) {
+			overlaps = append(overlaps, appointments[i])
+		}
+	}
+
+	return overlaps
+}
+
+func (a *Appointment) SetHash(hash string) {
+	fmt.Println(hash)
+	a.Hash = string(hash)
 }

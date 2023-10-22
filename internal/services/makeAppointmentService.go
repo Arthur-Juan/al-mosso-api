@@ -6,6 +6,7 @@ import (
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/cryptography"
 	"al-mosso-api/pkg/emailPkg"
+	"errors"
 	"fmt"
 	"gorm.io/gorm"
 	"time"
@@ -23,7 +24,7 @@ func NewMakeAppointmentService() *MakeAppointmentService {
 
 func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*types.AppointmentOutput, error) {
 	/*
-		* seguri a abordagem de uma credencial para cada agendamento
+		* seguir a abordagem de uma credencial para cada agendamento
 		  * envia o input
 		  * procura pelo email na base
 		  * se não achar => cria client novo
@@ -53,19 +54,53 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 		client = newClient
 	}
 
-	start, _ := time.Parse("12:00:00", input.Start)
-	end, _ := time.Parse("12:00:00", input.End)
+	//cria entidade de appointment
+
+	//parse string to time
+	start, _ := time.Parse("15h04m", input.Start)
+	end, _ := time.Parse("15h04m", input.End)
+
 	appointment, err := entity.NewAppointment(client, input.Date, start, end, input.Quantity, input.Message)
+	fmt.Println("=========================================")
+	fmt.Println(appointment)
+	fmt.Println(err)
+
+	fmt.Println("=========================================")
+	if err != nil {
+		return nil, err
+	}
+	//check quantidade de vagas
+	var appointmentsToCheck []entity.Appointment
+
+	//TODO => pegar somente vagas do mesmo dia !! (e talvez com horário proximo, ex: input.Start -3, input.End -3)
+	if err := s.db.Find(&appointmentsToCheck).Error; err != nil {
+		return nil, err
+	}
+
+	overlaps := appointment.CheckOverlap(appointmentsToCheck)
+
+	var overlapsQtd int
+	for _, value := range overlaps {
+		overlapsQtd += value.PeopleQtd
+	}
+	if (config.GetVacancies() - overlapsQtd) < input.Quantity {
+		return nil, errors.New(fmt.Sprintf("não temos vagas suficiente para %s pessoas nesse horário", input.Quantity))
+	}
+
+	//gera hash e salva no banco
 	hash, err := cryptography.GenerateRandomHash()
 	if err != nil {
 		return nil, err
 	}
 
 	appointment.Hash = hash
+	appointment.SetHash(hash)
 	err = s.db.Create(&appointment).Error
 	if err != nil {
 		return nil, err
 	}
+
+	//link de ativação
 	accessLink := fmt.Sprintf("%s/appointments/%s", config.GetHostName(), hash)
 	mailMsg := fmt.Sprintf("Confirme sua reserva em: %s", accessLink)
 

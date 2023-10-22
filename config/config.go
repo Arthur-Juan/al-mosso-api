@@ -25,6 +25,10 @@ func GetFilePath() string {
 	return filePath
 }
 
+func GetVacancies() int {
+	return 80
+}
+
 func GetDb() *gorm.DB {
 	return db
 }
