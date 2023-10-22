@@ -1,7 +1,9 @@
 package emailPkg
 
 import (
+	logger2 "al-mosso-api/pkg/logger"
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -31,6 +33,7 @@ func NewMailSender(to string, subject string, message string) (*MailSender, erro
 }
 
 func (m *MailSender) Send() error {
+	logger := logger2.NewLogger("mail")
 	msg := []byte(fmt.Sprintf(`{"from":{"email":"arthurjuan214@gmail.com"},
 	"to": [{"email":"%s"}],
 	"subject":"%s",
@@ -51,15 +54,35 @@ func (m *MailSender) Send() error {
 	res, err := client.Do(request)
 
 	if err != nil {
+		logger.Error(err)
 		return err
 	}
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
+		logger.Error(err)
 		return err
 	}
 
 	fmt.Println(string(body))
+	response := Response{}
+
+	if err := json.Unmarshal([]byte(body), &response); err != nil {
+		logger.Error(err)
+		return err
+	}
+
+	if response.Errors != nil {
+		logger.Error(response.Errors)
+		err, _ := json.Marshal(response.Errors)
+		return errors.New(string(err))
+	}
 	return nil
+}
+
+type Response struct {
+	Success    bool     `json:"success"`
+	MessageIDs []string `json:"message_ids"`
+	Errors     []string `json:"errors"`
 }
