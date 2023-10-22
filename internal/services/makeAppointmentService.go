@@ -61,11 +61,7 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 	end, _ := time.Parse("15h04m", input.End)
 
 	appointment, err := entity.NewAppointment(client, input.Date, start, end, input.Quantity, input.Message)
-	fmt.Println("=========================================")
-	fmt.Println(appointment)
-	fmt.Println(err)
 
-	fmt.Println("=========================================")
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +113,6 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 	//criar agendamento
 	return &types.AppointmentOutput{
 		Success: true,
-		Message: fmt.Sprintf("Email enviado para: %s\n", input.Email),
+		Message: fmt.Sprintf("Email enviado para: %s", input.Email),
 	}, nil
 }
