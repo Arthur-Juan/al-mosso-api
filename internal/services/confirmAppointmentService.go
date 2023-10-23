@@ -21,20 +21,20 @@ func NewConfirmAppointmentService() *ConfirmAppointmentService {
 	}
 }
 
-func (s *ConfirmAppointmentService) Execute(hash string) (*schemas.Appointment, error) {
+func (s *ConfirmAppointmentService) Execute(hash string) (string, error) {
 	var appointment *schemas.Appointment
 
 	if err := s.db.Where("hash = ? and verified = false", hash).First(&appointment).Error; err != nil {
 		if err.Error() == "record not found" {
-			return nil, errors.New("essa reserva ja foi confirmada")
+			return "", errors.New("essa reserva ja foi confirmada")
 		}
-		return nil, err
+		return "", err
 	}
 
 	password := cryptography.GenerateRandomPassowrd()
 	hash, err := cryptography.Encrypt(password)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	appointment.Password = password
@@ -48,12 +48,12 @@ func (s *ConfirmAppointmentService) Execute(hash string) (*schemas.Appointment, 
 
 	if result.Error != nil {
 
-		return nil, result.Error
+		return "", result.Error
 	}
 
 	var client entity.Client
 	if err := s.db.Where("id = ?", appointment.ClientID).First(&client).Error; err != nil {
-		return nil, err
+		return "", err
 	}
 	msg := fmt.Sprintf("Reserva confirmada!! Segue os dados de sua reserva:<br>"+
 		"<b>Código:</b> %s"+
@@ -62,13 +62,13 @@ func (s *ConfirmAppointmentService) Execute(hash string) (*schemas.Appointment, 
 
 	mail, err := emailPkg.NewMailSender(client.Email, "Reserva confirmada!", msg)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	err = mail.Send()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return appointment, nil
+	return "Reserva confirmada! Dados enviado para o email", nil
 
 }
