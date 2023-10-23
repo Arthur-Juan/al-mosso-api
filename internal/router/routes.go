@@ -18,7 +18,7 @@ func startRoutes(router *fiber.App) {
 		v1.Get("/foods", handlers.ListFoodHandler)
 
 		v1.Post("/appointments", handlers.MakeAppointmentHandler)
-
+		v1.Get("/appointments/confirm/:hash", handlers.ConfirmAppointmentHandler)
 		//v1.Get("/appointments/:hash")
 
 	}
