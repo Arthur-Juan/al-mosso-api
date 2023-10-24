@@ -32,12 +32,12 @@ func (s *ConfirmAppointmentService) Execute(hash string) (string, error) {
 	}
 
 	password := cryptography.GenerateRandomPassowrd()
-	hash, err := cryptography.Encrypt(password)
+	passHash, err := cryptography.Encrypt(password)
 	if err != nil {
 		return "", err
 	}
 
-	appointment.Password = password
+	appointment.Password = passHash
 	appointment.Verified = true
 
 	code := cryptography.GenerateDecorativeCode()
