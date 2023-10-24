@@ -89,7 +89,6 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 		return nil, err
 	}
 
-	appointment.Hash = hash
 	appointment.SetHash(hash)
 	err = s.db.Create(&appointment).Error
 	if err != nil {

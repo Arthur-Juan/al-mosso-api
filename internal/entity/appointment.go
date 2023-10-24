@@ -2,7 +2,6 @@ package entity
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 	"time"
 )
@@ -67,6 +66,5 @@ func (a *Appointment) CheckOverlap(appointments []Appointment) []Appointment {
 }
 
 func (a *Appointment) SetHash(hash string) {
-	fmt.Println(hash)
-	a.Hash = string(hash)
+	a.Hash = hash
 }
