@@ -20,6 +20,7 @@ type Appointment struct {
 	Hash      string
 	Password  string
 	Code      string
+	PIN       string
 }
 
 func NewAppointment(client *Client, date time.Time, start time.Time, end time.Time, peopleQtd int, message string) (*Appointment, error) {

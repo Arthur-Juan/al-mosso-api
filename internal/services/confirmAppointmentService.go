@@ -40,10 +40,11 @@ func (s *ConfirmAppointmentService) Execute(hash string) (string, error) {
 	appointment.Password = passHash
 	appointment.Verified = true
 
-	code := cryptography.GenerateDecorativeCode()
+	pin := cryptography.GenerateDecorativeCode()
 
-	appointment.Code = code
+	appointment.PIN = pin
 	logger.Info(appointment)
+
 	result := s.db.Save(&appointment)
 
 	if result.Error != nil {
@@ -59,7 +60,7 @@ func (s *ConfirmAppointmentService) Execute(hash string) (string, error) {
 	msg := fmt.Sprintf("Reserva confirmada!! Segue os dados de sua reserva:<br>"+
 		"<b>Código:</b> %s"+
 		"<b>Login:</b> %s"+
-		"<b>Senha</b>: %s", appointment.Code, client.Email, password)
+		"<b>Senha</b>: %s", appointment.PIN, client.Email, password)
 
 	mail, err := emailPkg.NewMailSender(client.Email, "Reserva confirmada!", msg)
 	if err != nil {
