@@ -29,6 +29,9 @@ func GetVacancies() int {
 	return 80
 }
 
+func GetKey() string {
+	return "PLEASE-CHANGE-THIS-KEY"
+}
 func GetDb() *gorm.DB {
 	return db
 }

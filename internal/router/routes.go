@@ -20,6 +20,7 @@ func startRoutes(router *fiber.App) {
 
 		v1.Post("/appointments", handlers.MakeAppointmentHandler)
 		v1.Get("/appointments/confirm/:hash", handlers.ConfirmAppointmentHandler)
+		v1.Post("/appointments/auth", handlers.AuthenticateAppointment)
 		//v1.Get("/appointments/:hash")
 
 	}

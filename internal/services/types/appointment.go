@@ -27,3 +27,9 @@ type AppointmentOutput struct {
 
 type AppointmentConfirmation struct {
 }
+
+type LoginAppointmentInput struct {
+	PIN      string `json:"PIN"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
