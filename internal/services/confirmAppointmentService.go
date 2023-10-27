@@ -55,10 +55,11 @@ func (s *ConfirmAppointmentService) Execute(hash string) (string, error) {
 	if err := s.db.Where("id = ?", appointment.ClientID).First(&client).Error; err != nil {
 		return "", err
 	}
+	logger.Error(client)
 	msg := fmt.Sprintf("Reserva confirmada!! Segue os dados de sua reserva:<br>"+
 		"<b>Código:</b> %s"+
 		"<b>Login:</b> %s"+
-		"<b>Senha</b>: %s", appointment.Code, client.Email, appointment.Password)
+		"<b>Senha</b>: %s", appointment.Code, client.Email, password)
 
 	mail, err := emailPkg.NewMailSender(client.Email, "Reserva confirmada!", msg)
 	if err != nil {

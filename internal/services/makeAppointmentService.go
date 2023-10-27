@@ -38,11 +38,8 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 	var client *entity.Client
 
 	err := s.db.Where("email = ?", input.Email).First(&client).Error
-	//if err != nil {
-	//	return nil, err
-	//}
 
-	if client == nil { // criar nova conta
+	if err.Error() == "record not found" { // criar nova conta
 		newClient, err := entity.NewClient(input.Name, input.Email, input.Phone)
 		if err != nil {
 			return nil, err
@@ -52,6 +49,9 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 			return nil, err
 		}
 		client = newClient
+		logger.Info(client)
+		logger.Info(newClient)
+
 	}
 
 	//cria entidade de appointment
