@@ -1,6 +1,7 @@
 package types
 
 import (
+	"al-mosso-api/internal/entity"
 	"time"
 )
 
@@ -32,4 +33,14 @@ type LoginAppointmentInput struct {
 	PIN      string `json:"PIN"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type AppointmentDetailOutput struct {
+	Date      time.Time
+	Start     time.Time
+	End       time.Time
+	PeopleQtd int
+	Message   string
+	Foods     []*entity.Food
+	PIN       string
 }

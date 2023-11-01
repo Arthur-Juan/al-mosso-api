@@ -28,7 +28,7 @@ func (s *ListFoodsService) Exceute() ([]types.FoodOutput, error) {
 	var result []types.FoodOutput
 	for _, food := range foods {
 		result = append(result, types.FoodOutput{
-			ID:          food.ID,
+			ID:          uint64(food.ID),
 			Name:        food.Name,
 			Price:       food.Price,
 			Description: food.Description,

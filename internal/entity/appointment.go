@@ -9,7 +9,7 @@ import (
 type Appointment struct {
 	BaseEntity
 	Client    *Client
-	ClientID  uint
+	ClientID  uint64
 	Date      time.Time
 	Start     time.Time
 	End       time.Time

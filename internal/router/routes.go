@@ -1,7 +1,10 @@
 package router
 
 import (
+	"al-mosso-api/config"
 	"al-mosso-api/internal/handlers"
+	"al-mosso-api/internal/handlers/middlwares"
+	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -21,6 +24,13 @@ func startRoutes(router *fiber.App) {
 		v1.Post("/appointments", handlers.MakeAppointmentHandler)
 		v1.Get("/appointments/confirm/:hash", handlers.ConfirmAppointmentHandler)
 		v1.Post("/appointments/auth", handlers.AuthenticateAppointment)
+
+		auth := v1.Group("" /*middleware*/, middlwares.CheckAuth)
+		{
+			auth.Use(jwtware.New(jwtware.Config{SigningKey: jwtware.SigningKey{Key: []byte(config.GetKey())}}))
+			auth.Get("/appointments/:pin", handlers.GetAppointmentHandler)
+		}
+
 		//v1.Get("/appointments/:hash")
 
 	}

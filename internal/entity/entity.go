@@ -1,5 +1,5 @@
 package entity
 
 type BaseEntity struct {
-	ID uint
+	ID uint64
 }

@@ -38,7 +38,7 @@ func (s *AuthenticateAppointment) Execute(input *types.LoginAppointmentInput) (s
 	}
 
 	//generate auth token
-	token, err := token2.GenerateToken(client.Client)
+	token, err := token2.GenerateToken(client)
 
 	return token, nil
 }
