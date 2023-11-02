@@ -2,8 +2,9 @@ package handlers
 
 import (
 	logger2 "al-mosso-api/pkg/logger"
-	"github.com/gofiber/fiber/v2"
 	"net/http"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 var (
@@ -25,4 +26,8 @@ func NotFound(ctx *fiber.Ctx, msg string) error {
 
 func Created(ctx *fiber.Ctx, msg interface{}) error {
 	return ctx.Status(http.StatusCreated).JSON(msg)
+}
+
+func NoContent(ctx *fiber.Ctx) error {
+	return ctx.SendStatus(http.StatusNoContent)
 }
