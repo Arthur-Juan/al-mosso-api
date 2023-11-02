@@ -12,7 +12,7 @@ var (
 func Init() error {
 	var err error
 	//init sqlite
-	db, err = InitializeSqlite()
+	db, err = InitializePg()
 
 	if err != nil {
 		return err
