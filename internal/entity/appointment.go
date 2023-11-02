@@ -21,6 +21,7 @@ type Appointment struct {
 	Password  string
 	Code      string
 	PIN       string
+	Price     float64
 }
 
 func NewAppointment(client *Client, date time.Time, start time.Time, end time.Time, peopleQtd int, message string) (*Appointment, error) {
@@ -68,4 +69,17 @@ func (a *Appointment) CheckOverlap(appointments []Appointment) []Appointment {
 
 func (a *Appointment) SetHash(hash string) {
 	a.Hash = hash
+}
+
+func (a *Appointment) CalculatePrice() {
+	var val float64
+
+	if a.Foods != nil {
+		for _, value := range a.Foods {
+			val += value.Price
+		}
+	}
+
+	val += 25.0 //taxa da reserva
+	a.Price = val
 }

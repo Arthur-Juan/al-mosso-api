@@ -36,11 +36,12 @@ type LoginAppointmentInput struct {
 }
 
 type AppointmentDetailOutput struct {
-	Date      time.Time
-	Start     time.Time
-	End       time.Time
-	PeopleQtd int
-	Message   string
-	Foods     []*entity.Food
-	PIN       string
+	Date      time.Time      `json:"date"`
+	Start     time.Time      `json:"start"`
+	End       time.Time      `json:"end"`
+	PeopleQtd int            `json:"people_qtd"`
+	Message   string         `json:"message"`
+	Foods     []*entity.Food `json:"foods"`
+	PIN       string         `json:"PIN"`
+	Price     float64        `json:"price"`
 }

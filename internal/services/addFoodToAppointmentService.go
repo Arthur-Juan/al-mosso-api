@@ -54,7 +54,7 @@ func (s *AddFoodToAppointmentService) Execute(input *types.AddFoodToAppointmentI
 	}
 
 	appointment.Foods = append(appointment.Foods, &food.Food)
-	logger.Debug(appointment)
+	appointment.CalculatePrice()
 	s.db.Save(&appointment)
 	return nil
 }

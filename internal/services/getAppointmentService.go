@@ -39,6 +39,8 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 		return nil, errors.New("unauthorized")
 	}
 
+	appointment.CalculatePrice()
+
 	return &types.AppointmentDetailOutput{
 		Date:      appointment.Date,
 		End:       appointment.End,
@@ -46,5 +48,6 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 		PeopleQtd: appointment.PeopleQtd,
 		Foods:     appointment.Foods,
 		PIN:       appointment.PIN,
+		Price:     appointment.Price,
 	}, nil
 }
