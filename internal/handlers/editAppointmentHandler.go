@@ -7,17 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func AddFoodToAppointmentHandler(ctx *fiber.Ctx) error {
-
-	var input *types.AddFoodToAppointmentInput
+func EditAppointmentHandler(ctx *fiber.Ctx) error {
+	input := &types.UpdateAppointmentInput{}
 	ctx.BodyParser(&input)
 
-	id := ctx.Locals("userId").(uint64)
 	pin := ctx.Params("pin")
-	input.PIN = pin
 
-	svc := services.NewAddFoodToAppointmentService()
-	err := svc.Execute(input, id)
+	id := ctx.Locals("userId").(uint64)
+
+	svc := services.NewEditAppointmentService()
+
+	err := svc.Execute(input, pin, id)
 
 	if err != nil {
 		return InternalServerError(ctx, err)

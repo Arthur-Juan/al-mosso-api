@@ -8,8 +8,9 @@ import (
 	"al-mosso-api/pkg/emailPkg"
 	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type MakeAppointmentService struct {
@@ -98,7 +99,7 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 	}
 
 	//link de ativação
-	accessLink := fmt.Sprintf("%s/appointments/%s", config.GetHostName(), hash)
+	accessLink := fmt.Sprintf("%s/api/v1/appointments/confirm/%s", config.GetHostName(), hash)
 	mailMsg := fmt.Sprintf("Confirme sua reserva em: %s", accessLink)
 
 	mail, err := emailPkg.NewMailSender(input.Email, "Confirmação de reserva", mailMsg)

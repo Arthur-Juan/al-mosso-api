@@ -31,8 +31,11 @@ func startRoutes(router *fiber.App) {
 			auth.Use(jwtware.New(jwtware.Config{SigningKey: jwtware.SigningKey{Key: []byte(config.GetKey())}}))
 
 			auth.Get("/appointments/:pin", handlers.GetAppointmentHandler)
-			auth.Post("/appointments/add_food", handlers.AddFoodToAppointmentHandler)
+			auth.Post("/appointments/:pin/add_food", handlers.AddFoodToAppointmentHandler)
+			// auth.Post("appointments/:pin/remove_food")
 
+			auth.Put("/appointments/:pin", handlers.EditAppointmentHandler)
+			// auth.Delete("appointment/:pin")
 		}
 
 		//v1.Get("/appointments/:hash")

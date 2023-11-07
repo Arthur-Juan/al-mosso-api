@@ -32,8 +32,6 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 		return nil, err
 	}
 
-	logger.Debug(appointment.End)
-
 	if appointment.ClientID != userid {
 		logger.Infof("userId: %s | appointment.ClientId: %s", userid, appointment.ClientID)
 		return nil, errors.New("unauthorized")
@@ -41,7 +39,9 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 
 	appointment.CalculatePrice()
 
-	return &types.AppointmentDetailOutput{
+	logger.Debug(appointment.Message)
+	logger.Debug(appointment.PeopleQtd)
+	result := &types.AppointmentDetailOutput{
 		Date:      appointment.Date,
 		End:       appointment.End,
 		Start:     appointment.Start,
@@ -49,5 +49,9 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 		Foods:     appointment.Foods,
 		PIN:       appointment.PIN,
 		Price:     appointment.Price,
-	}, nil
+		Message:   appointment.Message,
+	}
+
+	logger.Debug(result)
+	return result, nil
 }
