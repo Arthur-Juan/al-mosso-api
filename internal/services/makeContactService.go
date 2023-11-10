@@ -3,8 +3,10 @@ package services
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
+	"al-mosso-api/internal/error"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
+
 	"gorm.io/gorm"
 )
 
@@ -18,11 +20,11 @@ func NewMakeContactService() *MakeContactService {
 	}
 }
 
-func (s *MakeContactService) Execute(input *types.MakeContactInput) (string, error) {
+func (s *MakeContactService) Execute(input *types.MakeContactInput) (string, *error.TError) {
 
 	contactEntity, err := entity.NewContact(input.Name, input.Email, input.Subject, input.Message)
 	if err != nil {
-		return "", err
+		return "", error.NewError(500, err)
 	}
 
 	schema := &schemas.Contact{
@@ -32,7 +34,7 @@ func (s *MakeContactService) Execute(input *types.MakeContactInput) (string, err
 
 	result := s.db.Create(&schema)
 	if result.Error != nil {
-		return "", err
+		return "", error.NewError(500, err)
 	}
 
 	return "Contact send!", nil

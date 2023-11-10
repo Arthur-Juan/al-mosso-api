@@ -3,6 +3,7 @@ package handlers
 import (
 	"al-mosso-api/internal/services"
 	"al-mosso-api/internal/services/types"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,9 +17,9 @@ func AuthenticateAppointment(ctx *fiber.Ctx) error {
 	}
 
 	svc := services.NewAuthenticateAppointmentService()
-	result, err := svc.Execute(input)
+	result, terr := svc.Execute(input)
 	if err != nil {
-		return InternalServerError(ctx, err)
+		return DispatchError(ctx, *terr)
 	}
 
 	response := fiber.Map{

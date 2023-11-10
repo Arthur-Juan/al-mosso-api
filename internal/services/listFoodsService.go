@@ -2,8 +2,10 @@ package services
 
 import (
 	"al-mosso-api/config"
+	"al-mosso-api/internal/error"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
+
 	"gorm.io/gorm"
 )
 
@@ -17,12 +19,12 @@ func NewListFoodsService() *ListFoodsService {
 	}
 }
 
-func (s *ListFoodsService) Exceute() ([]types.FoodOutput, error) {
+func (s *ListFoodsService) Exceute() ([]types.FoodOutput, *error.TError) {
 
 	var foods []schemas.Food
 
 	if err := s.db.Find(&foods).Error; err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	var result []types.FoodOutput

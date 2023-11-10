@@ -3,8 +3,9 @@ package handlers
 import (
 	"al-mosso-api/internal/services"
 	"al-mosso-api/internal/services/types"
-	"github.com/gofiber/fiber/v2"
 	"path/filepath"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func InsertFoodHandler(ctx *fiber.Ctx) error {
@@ -44,9 +45,9 @@ func InsertFoodHandler(ctx *fiber.Ctx) error {
 	input.File = file
 
 	svc := services.NewInsertFoodService()
-	result, err := svc.Execute(input)
+	result, terr := svc.Execute(input)
 	if err != nil {
-		return InternalServerError(ctx, err)
+		return DispatchError(ctx, *terr)
 	}
 	return Created(ctx, result)
 }

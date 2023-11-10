@@ -32,10 +32,10 @@ func startRoutes(router *fiber.App) {
 
 			auth.Get("/appointments/:pin", handlers.GetAppointmentHandler)
 			auth.Post("/appointments/:pin/add_food", handlers.AddFoodToAppointmentHandler)
-			// auth.Post("appointments/:pin/remove_food")
+			auth.Post("appointments/:pin/remove_food", handlers.RemoveFoodFromAppointmentHandler)
 
 			auth.Put("/appointments/:pin", handlers.EditAppointmentHandler)
-			// auth.Delete("appointment/:pin")
+			auth.Delete("appointments/:pin", handlers.CancelAppointmentHandler)
 		}
 
 		//v1.Get("/appointments/:hash")

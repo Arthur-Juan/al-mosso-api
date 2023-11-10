@@ -6,16 +6,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetAppointmentHandler(ctx *fiber.Ctx) error {
+func CancelAppointmentHandler(ctx *fiber.Ctx) error {
 
 	pin := ctx.Params("pin")
 	id := ctx.Locals("userId").(uint64)
 
-	svc := services.NewGetAppointmentService()
-	result, err := svc.Execute(pin, id)
+	svc := services.NewCancelAppointmentService()
+
+	err := svc.Execute(pin, id)
+
 	if err != nil {
 		return DispatchError(ctx, *err)
 	}
-
-	return Ok(ctx, result)
+	return NoContent(ctx)
 }

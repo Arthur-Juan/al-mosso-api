@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"al-mosso-api/internal/services"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -11,7 +12,7 @@ func ListFoodHandler(ctx *fiber.Ctx) error {
 	result, err := svc.Exceute()
 
 	if err != nil {
-		return InternalServerError(ctx, err)
+		return DispatchError(ctx, *err)
 	}
 
 	if result == nil {

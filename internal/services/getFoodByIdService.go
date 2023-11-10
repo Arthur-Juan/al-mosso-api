@@ -3,7 +3,9 @@ package services
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
+	"al-mosso-api/internal/error"
 	"al-mosso-api/internal/services/types"
+
 	"gorm.io/gorm"
 )
 
@@ -17,11 +19,11 @@ func NewGetFoodByIdService() *GetFoodByIdService {
 	}
 }
 
-func (s *GetFoodByIdService) Execute(id uint64) (*types.FoodOutput, error) {
+func (s *GetFoodByIdService) Execute(id uint64) (*types.FoodOutput, *error.TError) {
 	var food entity.Food
 
 	if err := s.db.Where("id = ?", id).First(&food).Error; err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	result := &types.FoodOutput{

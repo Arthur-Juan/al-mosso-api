@@ -20,7 +20,7 @@ func AddFoodToAppointmentHandler(ctx *fiber.Ctx) error {
 	err := svc.Execute(input, id)
 
 	if err != nil {
-		return InternalServerError(ctx, err)
+		return DispatchError(ctx, *err)
 	}
 
 	return NoContent(ctx)

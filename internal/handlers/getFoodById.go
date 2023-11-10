@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"al-mosso-api/internal/services"
-	"github.com/gofiber/fiber/v2"
 	"strconv"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func GetFoodById(ctx *fiber.Ctx) error {
@@ -15,9 +16,9 @@ func GetFoodById(ctx *fiber.Ctx) error {
 	}
 
 	svc := services.NewGetFoodByIdService()
-	result, err := svc.Execute(uId)
+	result, terr := svc.Execute(uId)
 	if err != nil {
-		return InternalServerError(ctx, err)
+		return DispatchError(ctx, *terr)
 	}
 	return Ok(ctx, result)
 }

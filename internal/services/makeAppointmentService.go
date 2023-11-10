@@ -3,6 +3,7 @@ package services
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
+	"al-mosso-api/internal/error"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/cryptography"
 	"al-mosso-api/pkg/emailPkg"
@@ -23,7 +24,7 @@ func NewMakeAppointmentService() *MakeAppointmentService {
 	}
 }
 
-func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*types.AppointmentOutput, error) {
+func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*types.AppointmentOutput, *error.TError) {
 	/*
 		* seguir a abordagem de uma credencial para cada agendamento
 		  * envia o input
@@ -44,11 +45,11 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 		if err.Error() == "record not found" { // criar nova conta
 			newClient, err := entity.NewClient(input.Name, input.Email, input.Phone)
 			if err != nil {
-				return nil, err
+				return nil, error.NewError(500, err)
 			}
 			err = s.db.Create(&newClient).Error
 			if err != nil {
-				return nil, err
+				return nil, error.NewError(500, err)
 			}
 			client = newClient
 			logger.Info(client)
@@ -66,14 +67,14 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 	appointment, err := entity.NewAppointment(client, input.Date, start, end, input.Quantity, input.Message)
 
 	if err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 	//check quantidade de vagas
 	var appointmentsToCheck []entity.Appointment
 
 	//TODO => pegar somente vagas do mesmo dia !! (e talvez com horário proximo, ex: input.Start -3, input.End -3)
 	if err := s.db.Find(&appointmentsToCheck).Error; err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	overlaps := appointment.CheckOverlap(appointmentsToCheck)
@@ -83,19 +84,19 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 		overlapsQtd += value.PeopleQtd
 	}
 	if (config.GetVacancies() - overlapsQtd) < input.Quantity {
-		return nil, errors.New(fmt.Sprintf("não temos vagas suficiente para %s pessoas nesse horário", input.Quantity))
+		return nil, error.NewError(500, errors.New(fmt.Sprintf("não temos vagas suficiente para %s pessoas nesse horário", input.Quantity)))
 	}
 
 	//gera hash e salva no banco
 	hash, err := cryptography.GenerateRandomHash()
 	if err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	appointment.SetHash(hash)
 	err = s.db.Create(&appointment).Error
 	if err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	//link de ativação
@@ -104,12 +105,12 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 
 	mail, err := emailPkg.NewMailSender(input.Email, "Confirmação de reserva", mailMsg)
 	if err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	err = mail.Send()
 	if err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	//criar agendamento

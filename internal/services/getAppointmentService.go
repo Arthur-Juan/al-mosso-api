@@ -2,6 +2,7 @@ package services
 
 import (
 	"al-mosso-api/config"
+	"al-mosso-api/internal/error"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
 	"errors"
@@ -19,7 +20,7 @@ func NewGetAppointmentService() *GetAppointmentService {
 	}
 }
 
-func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.AppointmentDetailOutput, error) {
+func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.AppointmentDetailOutput, *error.TError) {
 
 	//verificar se user é dono do PIN (pegar pin e dps user)
 
@@ -27,14 +28,14 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 
 	if err := s.db.Preload("Foods").Where("pin = ? and verified = true", pin).First(&appointment).Error; err != nil {
 		if err.Error() == "record not found" {
-			return nil, errors.New("no appointent with this pin")
+			return nil, error.NewError(404, errors.New("no appointent with this pin"))
 		}
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 
 	if appointment.ClientID != userid {
 		logger.Infof("userId: %s | appointment.ClientId: %s", userid, appointment.ClientID)
-		return nil, errors.New("unauthorized")
+		return nil, error.NewError(403, errors.New("unauthorized"))
 	}
 
 	appointment.CalculatePrice()

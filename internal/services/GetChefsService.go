@@ -2,8 +2,10 @@ package services
 
 import (
 	"al-mosso-api/config"
+	"al-mosso-api/internal/error"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
+
 	"gorm.io/gorm"
 )
 
@@ -17,10 +19,10 @@ func NewGetChefsService() *GetChefsSerivce {
 	}
 }
 
-func (s *GetChefsSerivce) Execute() ([]types.ChefOutput, error) {
+func (s *GetChefsSerivce) Execute() ([]types.ChefOutput, *error.TError) {
 	var chefs []schemas.Chef
 	if err := s.db.Find(&chefs).Error; err != nil {
-		return nil, err
+		return nil, error.NewError(500, err)
 	}
 	logger.Infof("Data: %v: ", chefs)
 	var result []types.ChefOutput

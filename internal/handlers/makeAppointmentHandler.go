@@ -3,6 +3,7 @@ package handlers
 import (
 	"al-mosso-api/internal/services"
 	"al-mosso-api/internal/services/types"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,8 +17,10 @@ func MakeAppointmentHandler(ctx *fiber.Ctx) error {
 	}
 
 	svc := services.NewMakeAppointmentService()
-	result, err := svc.Execute(input)
-
+	result, terr := svc.Execute(input)
+	if terr != nil {
+		return DispatchError(ctx, *terr)
+	}
 	return Created(ctx, result)
 
 }

@@ -3,8 +3,9 @@ package handlers
 import (
 	"al-mosso-api/internal/services"
 	"al-mosso-api/internal/services/types"
-	"github.com/gofiber/fiber/v2"
 	"path/filepath"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func InsertChefHandler(ctx *fiber.Ctx) error {
@@ -18,7 +19,7 @@ func InsertChefHandler(ctx *fiber.Ctx) error {
 
 	err = ctx.BodyParser(&input)
 	if err != nil {
-
+		return InternalServerError(ctx, err)
 	}
 
 	if formFile != nil {
@@ -30,9 +31,10 @@ func InsertChefHandler(ctx *fiber.Ctx) error {
 
 	input.Photo = file
 	svc := services.NewInsertChefService()
-	result, err := svc.Execute(input)
-	if err != nil {
-
+	result, terr := svc.Execute(input)
+	if terr != nil {
+		DispatchError(ctx, *terr)
 	}
+
 	return Created(ctx, result)
 }

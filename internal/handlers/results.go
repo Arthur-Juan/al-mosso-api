@@ -31,3 +31,7 @@ func Created(ctx *fiber.Ctx, msg interface{}) error {
 func NoContent(ctx *fiber.Ctx) error {
 	return ctx.SendStatus(http.StatusNoContent)
 }
+
+func Unauthorized(ctx *fiber.Ctx, err error) error {
+	return ctx.Status(http.StatusUnauthorized).JSON(err)
+}

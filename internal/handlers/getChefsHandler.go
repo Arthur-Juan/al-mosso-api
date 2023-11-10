@@ -3,6 +3,7 @@ package handlers
 import (
 	"al-mosso-api/internal/services"
 	logger2 "al-mosso-api/pkg/logger"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -12,7 +13,7 @@ func GetChefsHandler(ctx *fiber.Ctx) error {
 	logger := logger2.NewLogger("handlers")
 	logger.Infof("handlers: %v", result)
 	if err != nil {
-		return InternalServerError(ctx, err)
+		return DispatchError(ctx, *err)
 	}
 	if result == nil {
 		return NotFound(ctx, "no chefs found")
