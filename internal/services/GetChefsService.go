@@ -3,14 +3,13 @@ package services
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/error"
+	"al-mosso-api/internal/interfaces"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
-
-	"gorm.io/gorm"
 )
 
 type GetChefsSerivce struct {
-	db *gorm.DB
+	db interfaces.IDatabase
 }
 
 func NewGetChefsService() *GetChefsSerivce {

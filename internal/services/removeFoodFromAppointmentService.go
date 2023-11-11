@@ -3,6 +3,7 @@ package services
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/error"
+	"al-mosso-api/internal/interfaces"
 	"al-mosso-api/pkg/database/schemas"
 	"errors"
 
@@ -10,7 +11,7 @@ import (
 )
 
 type RemoveFoodFromAppointmentService struct {
-	db *gorm.DB
+	db interfaces.IDatabase
 }
 
 func NewRemoveFoodFromAppointmentService() *RemoveFoodFromAppointmentService {

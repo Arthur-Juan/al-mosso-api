@@ -3,16 +3,15 @@ package services
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/error"
+	"al-mosso-api/internal/interfaces"
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/cryptography"
 	"al-mosso-api/pkg/database/schemas"
 	token2 "al-mosso-api/pkg/token"
-
-	"gorm.io/gorm"
 )
 
 type AuthenticateAppointment struct {
-	db *gorm.DB
+	db interfaces.IDatabase
 }
 
 func NewAuthenticateAppointmentService() *AuthenticateAppointment {

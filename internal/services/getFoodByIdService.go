@@ -4,13 +4,12 @@ import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
 	"al-mosso-api/internal/error"
+	"al-mosso-api/internal/interfaces"
 	"al-mosso-api/internal/services/types"
-
-	"gorm.io/gorm"
 )
 
 type GetFoodByIdService struct {
-	db *gorm.DB
+	db interfaces.IDatabase
 }
 
 func NewGetFoodByIdService() *GetFoodByIdService {

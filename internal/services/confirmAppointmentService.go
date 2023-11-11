@@ -4,17 +4,16 @@ import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/entity"
 	"al-mosso-api/internal/error"
+	"al-mosso-api/internal/interfaces"
 	"al-mosso-api/pkg/cryptography"
 	"al-mosso-api/pkg/database/schemas"
 	"al-mosso-api/pkg/emailPkg"
 	"errors"
 	"fmt"
-
-	"gorm.io/gorm"
 )
 
 type ConfirmAppointmentService struct {
-	db *gorm.DB
+	db interfaces.IDatabase
 }
 
 func NewConfirmAppointmentService() *ConfirmAppointmentService {
