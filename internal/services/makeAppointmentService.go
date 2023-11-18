@@ -10,7 +10,6 @@ import (
 	"al-mosso-api/pkg/emailPkg"
 	"errors"
 	"fmt"
-	"time"
 )
 
 type MakeAppointmentService struct {
@@ -58,12 +57,7 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 	}
 
 	//cria entidade de appointment
-
-	//parse string to time
-	start, _ := time.Parse("15h04m", input.Start)
-	end, _ := time.Parse("15h04m", input.End)
-
-	appointment, err := entity.NewAppointment(client, input.Date, start, end, input.Quantity, input.Message)
+	appointment, err := entity.NewAppointment(client, input.Date, input.Start, input.End, input.Quantity, input.Message)
 
 	if err != nil {
 		return nil, error.NewError(500, err)
@@ -83,7 +77,7 @@ func (s *MakeAppointmentService) Execute(input *types.MakeAppointmentInput) (*ty
 		overlapsQtd += value.PeopleQtd
 	}
 	if (config.GetVacancies() - overlapsQtd) < input.Quantity {
-		return nil, error.NewError(500, errors.New(fmt.Sprintf("não temos vagas suficiente para %s pessoas nesse horário", input.Quantity)))
+		return nil, error.NewError(500, errors.New(fmt.Sprintf("não temos vagas suficiente para %d pessoas nesse horário", input.Quantity)))
 	}
 
 	//gera hash e salva no banco

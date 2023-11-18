@@ -2,6 +2,7 @@ package entity
 
 import (
 	"errors"
+	"fmt"
 	"sort"
 	"time"
 )
@@ -24,35 +25,59 @@ type Appointment struct {
 	Price     float64
 }
 
-func NewAppointment(client *Client, date time.Time, start time.Time, end time.Time, peopleQtd int, message string) (*Appointment, error) {
+func NewAppointment(client *Client, date time.Time, start string, end string, peopleQtd int, message string) (*Appointment, error) {
 
-	if client == nil || date.IsZero() || start.IsZero() || end.IsZero() || peopleQtd < 1 || message == "" {
+	if client == nil || date.IsZero() || start == "" || end == "" || peopleQtd < 1 || message == "" {
 		return nil, errors.New("client, date, start, end, people quantity and message are required")
-	}
-
-	if start.After(end) {
-		return nil, errors.New("start time needs to be minor then end")
 	}
 
 	//TODO -> REVER VALIDAÇÃO
 	//if end.Sub(start) > 3 {
 	//	return nil, errors.New("max 3h of booking are allowed")
 	//}
-	return &Appointment{
+
+	appointment := &Appointment{
 		Client:    client,
 		ClientID:  client.ID,
 		Date:      date,
-		Start:     start,
-		End:       end,
 		PeopleQtd: peopleQtd,
 		Message:   message,
 		Verified:  false,
-	}, nil
+	}
+
+	appointment.SetTime(start, end)
+
+	return appointment, nil
+}
+
+func (a *Appointment) SetTime(start string, end string) error {
+	s, err := time.Parse("15h04m", start)
+	if err != nil {
+		return errors.New(fmt.Sprintf("erro ao gerenciar tempo: %s", err))
+	}
+	e, err := time.Parse("15h04m", end)
+
+	if err != nil {
+		return errors.New(fmt.Sprintf("erro ao gerenciar tempo: %s", err))
+	}
+
+	if s.After(e) {
+		return errors.New("start time needs to be minor then end")
+	}
+
+	if !s.IsZero() {
+		a.Start = s
+	}
+	if !e.IsZero() {
+		a.End = e
+	}
+
+	return nil
+
 }
 
 func (a *Appointment) CheckOverlap(appointments []Appointment) []Appointment {
 
-	// Don't create a shallow copy of 'a'
 	sort.Slice(appointments, func(i, j int) bool {
 		return appointments[i].Start.Before(appointments[j].Start)
 	})

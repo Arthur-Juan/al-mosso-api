@@ -33,7 +33,7 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 	}
 
 	if appointment.ClientID != userid {
-		logger.Infof("userId: %s | appointment.ClientId: %s", userid, appointment.ClientID)
+		logger.Infof("userId: %d | appointment.ClientId: %d", userid, appointment.ClientID)
 		return nil, error.NewError(403, errors.New("unauthorized"))
 	}
 

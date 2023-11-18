@@ -8,7 +8,6 @@ import (
 	"al-mosso-api/pkg/database/schemas"
 	"errors"
 	"reflect"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -40,9 +39,6 @@ func (s *EditAppointmentService) Execute(input *types.UpdateAppointmentInput, pi
 		return error.NewError(500, err)
 	}
 
-	start, _ := time.Parse("15h04m", input.Start)
-	end, _ := time.Parse("15h04m", input.End)
-
 	// Update appointment fields from input if not zero
 	inputValue := reflect.ValueOf(input).Elem()
 	appointmentValue := reflect.ValueOf(&appointment).Elem()
@@ -60,11 +56,8 @@ func (s *EditAppointmentService) Execute(input *types.UpdateAppointmentInput, pi
 		}
 	}
 
-	if !start.IsZero() {
-		appointment.Start = start
-	}
-	if !end.IsZero() {
-		appointment.End = end
+	if input.Start != "" || input.End != "" {
+		appointment.SetTime(input.Start, input.End)
 	}
 
 	logger.Debug(appointment)
