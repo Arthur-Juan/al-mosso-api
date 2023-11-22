@@ -8,7 +8,6 @@ import (
 	"al-mosso-api/internal/services/types"
 	"al-mosso-api/pkg/database/schemas"
 	"al-mosso-api/pkg/fileHandler"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -30,14 +29,11 @@ func (s *InsertFoodService) Execute(input *types.InsertFoodInput) (uint, *error.
 		return 0, error.NewError(500, err)
 	}
 
-	fmt.Println(input.File.FileData)
-
 	foodEntity, err := entity.NewFood(input.Name, input.Price, input.Description)
 	if err != nil {
 		return 0, error.NewError(500, err)
 	}
 	if input.File != nil {
-		logger.Debug(input.File)
 		file, err := fileHandler.SaveFile(input.File)
 		if err != nil {
 			return 0, error.NewError(500, err)

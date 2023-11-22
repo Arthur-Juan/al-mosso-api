@@ -1,10 +1,8 @@
 package types
 
-import "io"
-
 type TFile struct {
 	FileType  string
-	FileData  io.Reader
+	FileData  []byte
 	Extension string
 	FileName  string
 }

@@ -3,45 +3,31 @@ package fileHandler
 import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/services/types"
+	"errors"
 	"fmt"
-	"io"
 	"math/rand"
 	"os"
 	"time"
 )
 
 func SaveFile(file *types.TFile) (string, error) {
-	//_, err := os.Stat(config.GetFilePath())
-	//if err != nil {
-	//	return "", err
-	//}
-	//if os.IsNotExist(err) {
-	//	err = os.MkdirAll(config.GetFilePath(), os.ModePerm)
-	//	if err != nil {
-	//		return "", err
-	//	}
-	//
-	//	file, err := os.Create(config.GetFilePath())
-	//	if err != nil {
-	//		return "", err
-	//	}
-	//
-	//	err = file.Close()
-	//	if err != nil {
-	//		return "", err
-	//	}
-	//
-	//}
+
+	isValid := CheckFile(file)
+	if !isValid {
+		return "", errors.New("invalid file!")
+	}
+
 	fileName := generateUniqueFileName(file)
 	filePath := fmt.Sprintf("%s/%s", config.GetFilePath(), fileName)
 	dst, err := os.Create(filePath)
-
 	defer dst.Close()
 
 	if err != nil {
 		return "", err
 	}
-	_, err = io.Copy(dst, file.FileData)
+
+	dst.Write(file.FileData)
+
 	if err != nil {
 		return "", err
 	}
