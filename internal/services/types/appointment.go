@@ -52,4 +52,5 @@ type AppointmentDetailOutput struct {
 	Foods     []*entity.Food `json:"foods"`
 	PIN       string         `json:"PIN"`
 	Price     float64        `json:"price"`
+	Client    *entity.Client `json:"client"`
 }

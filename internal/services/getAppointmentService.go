@@ -25,7 +25,7 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 
 	var appointment *schemas.Appointment
 
-	if err := s.db.Preload("Foods").Where("pin = ? and verified = true", pin).First(&appointment).Error; err != nil {
+	if err := s.db.Preload("Foods").Preload("Client").Where("pin = ? and verified = true", pin).First(&appointment).Error; err != nil {
 		if err.Error() == "record not found" {
 			return nil, error.NewError(404, errors.New("no appointent with this pin"))
 		}
@@ -50,6 +50,7 @@ func (s *GetAppointmentService) Execute(pin string, userid uint64) (*types.Appoi
 		PIN:       appointment.PIN,
 		Price:     appointment.Price,
 		Message:   appointment.Message,
+		Client:    appointment.Client,
 	}
 
 	logger.Debug(result)

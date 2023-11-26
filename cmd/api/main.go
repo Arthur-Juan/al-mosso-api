@@ -18,7 +18,6 @@ func main() {
 	if err != nil {
 		logger.Errorf("config initialization ERROR: %v", err)
 		panic(err)
-		return
 	}
 	services.InitHandlerConfig()
 	router.Initialize()

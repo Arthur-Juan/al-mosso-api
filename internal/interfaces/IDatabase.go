@@ -10,4 +10,5 @@ type IDatabase interface {
 	Create(value interface{}) (tx *gorm.DB)
 	Select(query interface{}, args ...interface{}) (tx *gorm.DB)
 	Delete(value interface{}, conds ...interface{}) (tx *gorm.DB)
+	Model(value interface{}) (tx *gorm.DB)
 }
