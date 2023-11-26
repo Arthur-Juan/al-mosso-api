@@ -25,9 +25,9 @@ type Appointment struct {
 	Price     float64
 }
 
-func NewAppointment(client *Client, date time.Time, start string, end string, peopleQtd int, message string) (*Appointment, error) {
+func NewAppointment(client *Client, date string, start string, end string, peopleQtd int, message string) (*Appointment, error) {
 
-	if client == nil || date.IsZero() || start == "" || end == "" || peopleQtd < 1 || message == "" {
+	if client == nil || date == "" || start == "" || end == "" || peopleQtd < 1 || message == "" {
 		return nil, errors.New("client, date, start, end, people quantity and message are required")
 	}
 
@@ -36,10 +36,15 @@ func NewAppointment(client *Client, date time.Time, start string, end string, pe
 	//	return nil, errors.New("max 3h of booking are allowed")
 	//}
 
+	parsedDate, err := time.Parse("02-01-2006", date)
+	if err != nil {
+		return nil, err
+	}
+
 	appointment := &Appointment{
 		Client:    client,
 		ClientID:  client.ID,
-		Date:      date,
+		Date:      parsedDate,
 		PeopleQtd: peopleQtd,
 		Message:   message,
 		Verified:  false,

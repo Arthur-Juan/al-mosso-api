@@ -29,8 +29,10 @@ func (s *GetChefsSerivce) Execute() ([]types.ChefOutput, *error.TError) {
 	for _, chef := range chefs {
 		result = append(result, types.ChefOutput{
 			ID:          chef.ID,
+			Name:        chef.Name,
 			Role:        chef.Role,
 			Description: chef.Description,
+			Photo:       chef.ProfilePic,
 		})
 	}
 

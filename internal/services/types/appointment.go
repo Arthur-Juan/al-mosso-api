@@ -6,14 +6,14 @@ import (
 )
 
 type MakeAppointmentInput struct {
-	Name     string    `json:"name"`
-	Email    string    `json:"email"`
-	Phone    string    `json:"phone"`
-	Date     time.Time `json:"date"`
-	Start    string    `json:"start"`
-	End      string    `json:"end"`
-	Quantity int       `json:"quantity"`
-	Message  string    `json:"message"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Date     string `json:"date"`
+	Start    string `json:"start"`
+	End      string `json:"end"`
+	Quantity string `json:"quantity"`
+	Message  string `json:"message"`
 }
 
 type UpdateAppointmentInput struct {

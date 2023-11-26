@@ -23,7 +23,7 @@ func NewInsertChefService() *InsertChefService {
 }
 
 func (s *InsertChefService) Execute(input *types.InsertChefInput) (uint, *error.TError) {
-
+	logger.Debug(input)
 	chefEntity, err := entity.NewChef(input.Name, input.Role, input.Description, "")
 	if err != nil {
 		return 0, error.NewError(500, err)
@@ -41,6 +41,7 @@ func (s *InsertChefService) Execute(input *types.InsertChefInput) (uint, *error.
 		Model: gorm.Model{},
 		Chef:  *chefEntity,
 	}
+	logger.Debug(schema)
 
 	result := s.db.Create(&schema)
 	if result.Error != nil {

@@ -35,3 +35,7 @@ func NoContent(ctx *fiber.Ctx) error {
 func Unauthorized(ctx *fiber.Ctx, err error) error {
 	return ctx.Status(http.StatusUnauthorized).JSON(err)
 }
+
+func BadRequest(ctx *fiber.Ctx, msg interface{}) error {
+	return ctx.Status(http.StatusBadRequest).JSON(msg)
+}
