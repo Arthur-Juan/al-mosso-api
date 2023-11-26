@@ -55,18 +55,18 @@ func NewAppointment(client *Client, date string, start string, end string, peopl
 }
 
 func (a *Appointment) SetTime(start string, end string) error {
-	s, err := time.Parse("15h04m", start)
+	s, err := time.Parse("15:04", start)
 	if err != nil {
-		return errors.New(fmt.Sprintf("erro ao gerenciar tempo: %s", err))
+		return errors.New(fmt.Sprintf("error managing time: %s", err))
 	}
-	e, err := time.Parse("15h04m", end)
+	e, err := time.Parse("15:04", end)
 
 	if err != nil {
-		return errors.New(fmt.Sprintf("erro ao gerenciar tempo: %s", err))
+		return errors.New(fmt.Sprintf("error managing time: %s", err))
 	}
 
 	if s.After(e) {
-		return errors.New("start time needs to be minor then end")
+		return errors.New("start time needs to be earlier than end time")
 	}
 
 	if !s.IsZero() {
@@ -77,7 +77,6 @@ func (a *Appointment) SetTime(start string, end string) error {
 	}
 
 	return nil
-
 }
 
 func (a *Appointment) CheckOverlap(appointments []Appointment) []Appointment {
