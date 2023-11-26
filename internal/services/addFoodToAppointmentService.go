@@ -54,7 +54,7 @@ func (s *AddFoodToAppointmentService) Execute(input *types.AddFoodToAppointmentI
 		return error.NewError(500, err)
 	}
 
-	s.db.Model(&appointment).Association("Foods").Append(&food)
+	appointment.Foods = append(appointment.Foods, &food)
 	appointment.CalculatePrice()
 	s.db.Save(&appointment)
 	return nil

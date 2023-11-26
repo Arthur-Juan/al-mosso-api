@@ -47,7 +47,6 @@ func (s *RemoveFoodFromAppointmentService) Execute(pin string, userId uint64, fo
 		return error.NewError(500, err)
 	}
 
-	s.db.Select("Appointments").Where("pin = ? and client_id = ? and verified = true", pin, client.ID).Delete(food).Limit(1)
-
+	s.db.Model(&appointment).Association("Foods").Delete(food)
 	return nil
 }

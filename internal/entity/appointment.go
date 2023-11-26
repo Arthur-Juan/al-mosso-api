@@ -16,7 +16,6 @@ type Appointment struct {
 	End       time.Time
 	PeopleQtd int
 	Message   string
-	Foods     []*Food `gorm:"many2many:appointment_foods"`
 	Verified  bool
 	Hash      string
 	Password  string
@@ -99,17 +98,4 @@ func (a *Appointment) CheckOverlap(appointments []Appointment) []Appointment {
 
 func (a *Appointment) SetHash(hash string) {
 	a.Hash = hash
-}
-
-func (a *Appointment) CalculatePrice() {
-	var val float64
-
-	if a.Foods != nil {
-		for _, value := range a.Foods {
-			val += value.Price
-		}
-	}
-
-	val += 25.0 //taxa da reserva
-	a.Price = val
 }

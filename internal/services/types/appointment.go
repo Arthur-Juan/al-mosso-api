@@ -2,6 +2,7 @@ package types
 
 import (
 	"al-mosso-api/internal/entity"
+	"al-mosso-api/pkg/database/schemas"
 	"time"
 )
 
@@ -44,13 +45,13 @@ type LoginAppointmentInput struct {
 }
 
 type AppointmentDetailOutput struct {
-	Date      time.Time      `json:"date"`
-	Start     time.Time      `json:"start"`
-	End       time.Time      `json:"end"`
-	PeopleQtd int            `json:"people_qtd"`
-	Message   string         `json:"message"`
-	Foods     []*entity.Food `json:"foods"`
-	PIN       string         `json:"PIN"`
-	Price     float64        `json:"price"`
-	Client    *entity.Client `json:"client"`
+	Date      time.Time       `json:"date"`
+	Start     time.Time       `json:"start"`
+	End       time.Time       `json:"end"`
+	PeopleQtd int             `json:"people_qtd"`
+	Message   string          `json:"message"`
+	Foods     []*schemas.Food `json:"foods"`
+	PIN       string          `json:"PIN"`
+	Price     float64         `json:"price"`
+	Client    *entity.Client  `json:"client"`
 }
