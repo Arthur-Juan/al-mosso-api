@@ -16,6 +16,7 @@ type Claims struct {
 	Email string
 	Name  string
 	Exp   int64
+	Pin   string
 }
 
 func GenerateToken(client *schemas.Client, pin string) (string, error) {
@@ -23,12 +24,12 @@ func GenerateToken(client *schemas.Client, pin string) (string, error) {
 	logger2.NewLogger("auth").Info(client)
 	logger2.NewLogger("auth").Info(client.ID)
 
-	claims := &jwt.MapClaims{
-		"ID":    uint64(client.ID),
-		"Email": client.Email,
-		"Name":  client.Email,
-		"exp":   time.Now().Add(time.Hour * 8).Unix(),
-		"pin":   pin,
+	claims := &Claims{
+		ID:    uint64(client.ID),
+		Email: client.Email,
+		Name:  client.Email,
+		Exp:   time.Now().Add(time.Hour * 8).Unix(),
+		Pin:   pin,
 	}
 
 	tokenHandler := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

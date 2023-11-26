@@ -36,6 +36,8 @@ func startRoutes(router *fiber.App) {
 
 			auth.Put("/appointments/:pin", handlers.EditAppointmentHandler)
 			auth.Delete("appointments/:pin", handlers.CancelAppointmentHandler)
+
+			auth.Get("/appointments", handlers.GetAppointmentByToken)
 		}
 
 		//v1.Get("/appointments/:hash")

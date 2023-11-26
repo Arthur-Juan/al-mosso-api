@@ -2,8 +2,9 @@ package middlwares
 
 import (
 	token2 "al-mosso-api/pkg/token"
-	"github.com/gofiber/fiber/v2"
 	"net/http"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func CheckAuth(ctx *fiber.Ctx) error {
@@ -25,5 +26,6 @@ func CheckAuth(ctx *fiber.Ctx) error {
 		})
 	}
 	ctx.Locals("userId", token.ID)
+	ctx.Locals("pin", token.Pin)
 	return ctx.Next()
 }
