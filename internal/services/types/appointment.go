@@ -18,11 +18,11 @@ type MakeAppointmentInput struct {
 }
 
 type UpdateAppointmentInput struct {
-	PeopleQtd int       `json:"people_quantity"`
-	Message   string    `json:"message"`
-	Date      time.Time `json:"date"`
-	Start     string    `json:"start"`
-	End       string    `json:"end"`
+	PeopleQtd int    `json:"quantity"`
+	Message   string `json:"message"`
+	Date      string `json:"date"`
+	Start     string `json:"start"`
+	End       string `json:"end"`
 }
 
 type Credentials struct {

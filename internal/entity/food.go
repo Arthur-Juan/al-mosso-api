@@ -8,6 +8,7 @@ type Food struct {
 	Price       float64
 	Description string
 	ProfilePic  string
+	Type        string
 }
 
 func NewFood(name string, price float64, description string) (*Food, error) {
