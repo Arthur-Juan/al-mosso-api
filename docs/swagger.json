@@ -1,0 +1,460 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Al Mosso API",
+    "description": "API for Al Mosso"
+  },
+  "basePath": "/api/v1",
+  "schemes": ["http"],
+  "consumes": ["multipart/form-data"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ],
+  "paths": {
+    "/contacts": {
+      "post": {
+        "summary": "Create a contact",
+        "operationId": "makeContact",
+        "parameters": [
+          {
+            "name": "contactInput",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MakeContactInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/chefs": {
+      "get": {
+        "summary": "Get chefs",
+        "operationId": "getChefs",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "Insert a chef",
+        "operationId": "insertChef",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "role",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "picture",
+            "in": "formData",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/foods": {
+      "post": {
+        "summary": "Insert a food",
+        "operationId": "insertFood",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "Name",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "Price",
+            "in": "formData",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "Description",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "Type",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "picture",
+            "in": "formData",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "get": {
+        "summary": "List foods",
+        "operationId": "listFoods",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/foods/{id}": {
+      "get": {
+        "summary": "Get food by ID",
+        "operationId": "getFoodById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete food by ID",
+        "operationId": "deleteFood",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/appointments": {
+      "post": {
+        "summary": "Make an appointment",
+        "operationId": "makeAppointment",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "appointmentInput",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MakeAppointmentInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "/confirm/{hash}": {
+        "get": {
+          "summary": "Confirm appointment",
+          "operationId": "confirmAppointment",
+          "parameters": [
+            {
+              "name": "hash",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/auth": {
+        "post": {
+          "summary": "Authenticate appointment",
+          "operationId": "authenticateAppointment",
+          "parameters": [
+            {
+              "name": "authenticationInput",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/AuthenticationInput"
+              }
+            }
+          ],
+          "security": [
+            {
+              "jwt": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/{pin}": {
+        "get": {
+          "summary": "Get appointment by PIN",
+          "operationId": "getAppointment",
+          "parameters": [
+            {
+              "name": "pin",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "post": {
+          "summary": "Add food to appointment by PIN",
+          "operationId": "addFoodToAppointment",
+          "parameters": [
+            {
+              "name": "pin",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "put": {
+          "summary": "Edit appointment by PIN",
+          "operationId": "editAppointment",
+          "parameters": [
+            {
+              "name": "pin",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Cancel appointment by PIN",
+          "operationId": "cancelAppointment",
+          "parameters": [
+            {
+              "name": "pin",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        }
+      },
+      "/add_food": {
+        "post": {
+          "summary": "Add food to appointment by token",
+          "operationId": "addFoodToAppointmentByToken",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "foodInput",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FoodInput"
+            }
+          }
+        ],
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "MakeContactInput": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Subject": {
+          "type": "string"
+        },
+        "Message": {
+          "type": "string"
+        }
+      },
+      "required": ["Name", "Email", "Subject", "Message"]
+    },
+    "AuthenticationInput": {
+      "type": "object",
+      "properties": {
+        "Token": {
+          "type": "string"
+        }
+      },
+      "required": ["Token"]
+    },
+    "FoodInput": {
+      "type": "object",
+      "properties": {
+      },
+      "required": []
+    },
+    "InsertChefInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "file"
+        }
+      },
+      "required": ["name", "role", "description", "picture"]
+    },
+    "TFile": {
+      "type": "object",
+      "properties": {
+        "picture": {
+          "type": "string",
+          "format": "binary"
+        }
+      }
+    },
+    "InsertFoodInput": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Price": {
+          "type": "number",
+          "format": "double"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "File": {
+          "type": "file"
+        }
+      },
+      "required": ["Name", "Price", "Description", "Type", "File"]
+    },
+    "MakeAppointmentInput": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Phone": {
+          "type": "string"
+        },
+        "Date": {
+          "type": "string"
+        },
+        "Start": {
+          "type": "string"
+        },
+        "End": {
+          "type": "string"
+        },
+        "Quantity": {
+          "type": "integer"
+        },
+        "Message": {
+          "type": "string"
+        }
+      },
+      "required": ["Name", "Email", "Phone", "Date", "Start", "End", "Quantity", "Message"]
+    }
+  }
+}
