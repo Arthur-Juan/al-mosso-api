@@ -28,5 +28,6 @@ func InitializePg() (*gorm.DB, error) {
 	}
 
 	logger.Info("Migration made!")
+
 	return db, nil
 }

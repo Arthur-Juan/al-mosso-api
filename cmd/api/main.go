@@ -4,6 +4,7 @@ import (
 	"al-mosso-api/config"
 	"al-mosso-api/internal/router"
 	"al-mosso-api/internal/services"
+	"al-mosso-api/pkg/database"
 	logger2 "al-mosso-api/pkg/logger"
 )
 
@@ -20,5 +21,14 @@ func main() {
 		panic(err)
 	}
 	services.InitHandlerConfig()
+
+	var qtd int
+
+	db := config.GetDb()
+	db.Raw("select count(*) from foods").Scan(&qtd)
+	logger.Debug(qtd)
+	if qtd == 0 {
+		database.Seed()
+	}
 	router.Initialize()
 }
